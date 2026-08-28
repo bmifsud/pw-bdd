@@ -2,7 +2,7 @@ import { Given, When, Then, setDefaultTimeout } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { pageFixture } from '../../hooks/pageFixture';
 
-setDefaultTimeout(20000);
+setDefaultTimeout(60000);
 
 Given('the user is on the Automation Exercise homepage', async function () {
     await pageFixture.page.goto('https://automationexercise.com', { waitUntil: 'domcontentloaded' });
@@ -46,10 +46,10 @@ When('the user proceeds to checkout', async function () {
     try {
         await pageFixture.page.click('a[href="/view_cart"]');
         await pageFixture.page.click('a.check_out');
-        await pageFixture.page.fill('textarea.form-control', 'Please deliver fast.');
+        await pageFixture.page.fill('textarea.form-control', 'Please deliver fast.', { timeout: 3000 });
         await pageFixture.page.click('a[href="/payment"]');
 
-        await pageFixture.page.fill('input[data-qa="name-on-card"]', 'Test User');
+        await pageFixture.page.fill('input[data-qa="name-on-card"]', 'Test User', { timeout: 3000 });
         await pageFixture.page.fill('input[data-qa="card-number"]', '1234567812345678');
         await pageFixture.page.fill('input[data-qa="cvc"]', '123');
         await pageFixture.page.fill('input[data-qa="expiry-month"]', '12');

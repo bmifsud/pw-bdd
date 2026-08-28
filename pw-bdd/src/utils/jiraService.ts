@@ -3,7 +3,11 @@ import { logger } from './logger';
 export async function logBugToJira(scenarioName: string, errorMessage: string, base64Screenshot: string) {
     const jiraUrl = process.env.MOCK_API === 'true'
         ? 'http://127.0.0.1:9090/rest/api/2/issue'
-        : 'https://your-domain.atlassian.net/rest/api/2/issue';
+        : (process.env.JIRA_API_URL || 'https://your-domain.atlassian.net/rest/api/2/issue');
+
+    const jiraEmail = process.env.JIRA_EMAIL || 'dummy-email@example.com';
+    const jiraToken = process.env.JIRA_API_TOKEN || 'dummy-token';
+    const authHeader = `Basic ${Buffer.from(`${jiraEmail}:${jiraToken}`).toString('base64')}`;
 
     const payload = {
         fields: {
@@ -20,7 +24,7 @@ export async function logBugToJira(scenarioName: string, errorMessage: string, b
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Basic ${Buffer.from('email:token').toString('base64')}`
+                'Authorization': authHeader
             },
             body: JSON.stringify(payload)
         });

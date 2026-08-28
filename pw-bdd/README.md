@@ -54,18 +54,17 @@ Reports are available in `test-results/reports/`.
 
 ## 🔄 Transitioning Jira Mock to a Live API
 
-Currently, the framework uses MSW to mock the Jira REST API (`POST /rest/api/2/issue`). To connect this to a live Jira instance:
+Currently, the framework uses MSW to mock the Jira REST API (`POST /rest/api/2/issue`). To connect this to a live Jira instance, the integration follows industry-standard secure token handling:
 
 1.  **Disable the Mock:**
     In your CI environment or `.env` file, set `MOCK_API=false`.
-2.  **Configure Live Details:**
-    Open `src/utils/jiraService.ts`.
-    Update the `jiraUrl` to point to your live instance (e.g., `https://your-domain.atlassian.net/rest/api/2/issue`).
-3.  **Authentication:**
-    Set up environment variables for your Jira credentials (e.g., `JIRA_EMAIL` and `JIRA_API_TOKEN`).
-    Update the Authorization header in `jiraService.ts` to use these variables securely instead of the hardcoded mock values.
-4.  **Payload Adjustment:**
-    Ensure the JSON payload in `jiraService.ts` strictly conforms to your Jira project's required fields (e.g., Custom Fields, Issue Types).
+2.  **Set Environment Variables:**
+    Set the following variables securely in your CI/CD pipeline (e.g., GitHub Secrets) or local `.env` file. Do not commit credentials directly into the codebase.
+    *   `JIRA_API_URL` (e.g., `https://your-domain.atlassian.net/rest/api/2/issue`)
+    *   `JIRA_EMAIL`
+    *   `JIRA_API_TOKEN`
+3.  **Payload Adjustment:**
+    Ensure the JSON payload in `src/utils/jiraService.ts` strictly conforms to your Jira project's required fields (e.g., Custom Fields, Issue Types).
 
 ## 📄 Documentation
 
