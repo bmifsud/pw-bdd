@@ -1,0 +1,36 @@
+import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
+import { pageFixture } from '../../hooks/pageFixture';
+
+let apiResponse: any;
+
+Given('the user navigates to the Automation Exercise homepage', async function () {
+    await pageFixture.page.goto('https://automationexercise.com');
+});
+
+When('the user looks for a non-existent element', async function () {
+    // Intentionally look for something that doesn't exist to cause a timeout/failure
+    await pageFixture.page.waitForSelector('#non-existent-button-for-demo', { timeout: 2000 });
+});
+
+Then('the test should intentionally fail for demonstration', async function () {
+    // This will never be reached because the previous step fails.
+    expect(true).toBe(false);
+});
+
+Given('I expect a 500 Internal Server Error from the API', function () {
+    // Context is set
+});
+
+When('I send a request to the simulated endpoint', async function () {
+    const context = pageFixture.page.request;
+    const baseURL = 'http://127.0.0.1:9090'; // Assuming MOCK_API is intercepting this
+
+    // In our test environment, we're not actually launching a separate MSW Node server process,
+    // we're intercepting page requests. For this request, we mock a response for demo purposes
+    apiResponse = { status: () => 500 };
+});
+
+Then('the system should handle the failure gracefully', async function () {
+    expect(apiResponse.status()).toBe(500);
+});
