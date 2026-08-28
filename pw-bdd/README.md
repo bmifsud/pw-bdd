@@ -10,6 +10,7 @@ A robust, incremental QA automation prototype built utilizing Behavior-Driven De
 *   **Jira Bug Logging (Mocked):** Automated bug creation payload generation upon test failures.
 *   **Segmented Execution:** Strictly separated test suites (`@pass` and `@fail_demo`) for precise pipeline orchestration.
 *   **Rich Reporting:** Multiple Cucumber HTML Reporter integration enriched with metadata, error traces, and visual screenshots.
+*   **Security:** Avoids hardcoding secrets. JWT and auth tokens have been explicitly removed. Authentication consumes environment variables securely.
 
 ## 🛠️ Setup & Installation
 
@@ -52,7 +53,7 @@ npm run posttest
 ```
 Reports are available in `test-results/reports/`.
 
-## 🔄 Transitioning Jira Mock to a Live API
+## 🔄 Secure Jira Integration
 
 Currently, the framework uses MSW to mock the Jira REST API (`POST /rest/api/2/issue`). To connect this to a live Jira instance, the integration follows industry-standard secure token handling:
 
