@@ -1,0 +1,38 @@
+name: Demo Failure Suite
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-failure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Demo Failure Suite
+        run: npm run test:demo_failure || true
+        env:
+          MOCK_API: true
+
+      - name: Generate Report
+        if: always()
+        run: npm run posttest
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: demo-failure-report
+          path: test-results/reports/
+          retention-days: 7
