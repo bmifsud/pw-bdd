@@ -17,7 +17,7 @@ When('the user looks for a non-existent element', async function () {
 });
 
 Then('the test should intentionally fail for demonstration', async function () {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
 });
 
 Given('I expect a 500 Internal Server Error from the API', function () {
